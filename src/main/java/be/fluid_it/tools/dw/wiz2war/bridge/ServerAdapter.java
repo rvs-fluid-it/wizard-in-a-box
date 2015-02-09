@@ -115,6 +115,7 @@ public class ServerAdapter extends Server {
 
     @Override
     public void setHandler(Handler handler) {
+        logger.info("Set handler ", handler.getClass().getName());
         synchronized (handlers) {
             handlers.add(handler);
         }
