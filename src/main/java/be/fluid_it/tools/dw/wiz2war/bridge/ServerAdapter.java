@@ -18,13 +18,21 @@ public class ServerAdapter extends Server {
 
     private final Environment environment;
 
+    private final List<Connector> connectors = new LinkedList<Connector>();
+    private final Map<String, Object> attributesByName = new HashMap<String, Object>();
+    private final List<Handler> handlers = new LinkedList<Handler>();
+
+    private enum ServerState {
+        FAILED, STARTING, STARTED, STOPPING, STOPPED;
+    }
+
+    private ServerState serverState = ServerState.STARTED;
+
+
     public ServerAdapter(Environment environment) {
         this.environment = environment;
     }
 
-    // Server connectors
-
-    private final List<Connector> connectors = new LinkedList<Connector>();
 
     @Override
     public Connector[] getConnectors() {
@@ -45,9 +53,6 @@ public class ServerAdapter extends Server {
         connectors.remove(connector);
     }
 
-    // Server attributes
-
-    private final Map<String, Object> attributesByName = new HashMap<String, Object>();
 
     @Override
     public void clearAttributes() {
@@ -96,14 +101,10 @@ public class ServerAdapter extends Server {
         throw new UnsupportedOperationException();
     }
 
-    // Handlers
-    private final List<Handler> handlers = new LinkedList<Handler>();
-
     @Override
     public Handler getHandler() {
-        synchronized (handlers) {
-            return handlers.size() > 0 ? handlers.get(0) : null;
-        }
+        // TODO
+        return null;
     }
 
     @Override
@@ -127,12 +128,6 @@ public class ServerAdapter extends Server {
     }
 
     // Server Lifecycle
-
-    private enum ServerState {
-        FAILED, STARTING, STARTED, STOPPING, STOPPED;
-    }
-
-    private ServerState serverState = ServerState.STARTED;
 
     @Override
     public boolean isRunning() {

@@ -22,6 +22,10 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
     private AtomicBoolean deployedOnContainer = new AtomicBoolean(false);
     private final String[] args;
 
+    public static ServletContext servletContext() {
+        return theServletContext;
+    }
+
     public WebApplication(String configurationFileLocation) {
         this(new String[]{"server", configurationFileLocation});
     }
@@ -38,8 +42,13 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
         super.initialize(bootstrap);
     }
 
+    public void setDeployedOnContainer(boolean deployedOnContainer) {
+        this.deployedOnContainer.getAndSet(deployedOnContainer);
+    }
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        theServletContext = sce.getServletContext();
         // Probably currently too (thread-)safe
         // but hence more future proof
         if (deployedOnContainer.compareAndSet(false, true)) {

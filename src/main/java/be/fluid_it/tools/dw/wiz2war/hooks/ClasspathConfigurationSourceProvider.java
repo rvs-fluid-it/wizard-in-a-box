@@ -8,6 +8,7 @@ import java.io.InputStream;
 public class ClasspathConfigurationSourceProvider implements ConfigurationSourceProvider {
     @Override
     public InputStream open(String path) throws IOException {
-        return getClass().getResourceAsStream(path);
+        getClass().getClassLoader();
+        return getClass().getResourceAsStream("/" + path);
     }
 }
