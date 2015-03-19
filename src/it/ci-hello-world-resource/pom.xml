@@ -22,11 +22,11 @@
           <artifactId>wiz-to-war</artifactId>
           <version>testing</version>
       </dependency>
-      <!--dependency>
+      <dependency>
           <groupId>ch.qos.logback</groupId>
           <artifactId>logback-classic</artifactId>
           <version>1.1.2</version>
-      </dependency-->
+      </dependency>
       <dependency>
           <groupId>junit</groupId>
           <artifactId>junit</artifactId>

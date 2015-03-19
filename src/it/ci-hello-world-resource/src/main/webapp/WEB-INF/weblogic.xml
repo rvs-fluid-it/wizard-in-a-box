@@ -4,42 +4,46 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd http://xmlns.oracle.com/weblogic/weblogic-web-app http://xmlns.oracle.com/weblogic/weblogic-web-app/1.5/weblogic-web-app.xsd">
 
-    <wls:session-descriptor>
-        <wls:cookie-path>/hello-world-dw-webapp</wls:cookie-path>
-    </wls:session-descriptor>
-
     <wls:container-descriptor>
-        <wls:allow-all-roles>true</wls:allow-all-roles>
-    </wls:container-descriptor>
-
-    <wls:container-descriptor>
-        <!-- Brute force -->
-        <!-- http://blog.c2b2.co.uk/2014/08/alternative-logging-frameworks-for.html -->
-        <!-- wls:prefer-web-inf-classes>true</wls:prefer-web-inf-classes -->
+        <wls:prefer-web-inf-classes>false</wls:prefer-web-inf-classes>
         <wls:prefer-application-packages>
-        <!-- jersey-bundle-*.jar -->
-        <wls:package-name>com.sun.jersey.*</wls:package-name>
-        <wls:package-name>com.sun.research.ws.wadl.*</wls:package-name>
-        <wls:package-name>com.sun.ws.rs.ext.*</wls:package-name>
+            <!-- Logging -->
+            <wls:package-name>org.slf4j</wls:package-name>
 
-        <!-- Jackson-*.jar -->
-        <wls:package-name>org.codehaus.jackson.*</wls:package-name>
+            <!-- Joda time -->
+            <wls:package-name>org.joda.*</wls:package-name>
 
-        <!-- jettison-*.jar -->
-        <wls:package-name>org.codehaus.jettison.*</wls:package-name>
+            <wls:package-name>org.hibernate.validator.*</wls:package-name>
+            <wls:package-name>org.hibernate.*</wls:package-name>
+            <wls:package-name>javax.validation.*</wls:package-name>
+            <wls:package-name>javax.validation.bootstrap.*</wls:package-name>
+            <wls:package-name>javax.validation.constraints.*</wls:package-name>
+            <wls:package-name>javax.validation.groups.*</wls:package-name>
+            <wls:package-name>javax.validation.metadata.*</wls:package-name>
+            <wls:package-name>javax.validation.spi.*</wls:package-name>
 
-        <!-- jsr311*.jar -->
-        <wls:package-name>javax.ws.rs.*</wls:package-name>
+            <!-- jersey-bundle-*.jar -->
+            <wls:package-name>com.sun.jersey.*</wls:package-name>
+            <wls:package-name>com.sun.research.ws.wadl.*</wls:package-name>
+            <wls:package-name>com.sun.ws.rs.ext.*</wls:package-name>
 
-        <!-- asm.jar -->
-        <wls:package-name>org.objectweb.asm.*</wls:package-name>
+            <!-- Jackson-*.jar -->
+            <wls:package-name>org.codehaus.jackson.*</wls:package-name>
 
-        <wls:package-name>org.slf4j.*</wls:package-name>
-        <wls:package-name>org.slf4j.helpers.*</wls:package-name>
-        <wls:package-name>org.slf4j.impl.*</wls:package-name>
-        <wls:package-name>org.slf4j.spi.*</wls:package-name>
-        <wls:package-name>ch.qos.logback.*</wls:package-name>
+            <!-- jettison-*.jar -->
+            <wls:package-name>org.codehaus.jettison.*</wls:package-name>
+
+            <!-- jsr311*.jar -->
+            <wls:package-name>javax.ws.rs.*</wls:package-name>
+
+            <!-- asm.jar -->
+            <wls:package-name>org.objectweb.asm.*</wls:package-name>
+
         </wls:prefer-application-packages>
+        <wls:prefer-application-resources>
+            <wls:resource-name>javax.validation.*</wls:resource-name>
+            <wls:resource-name>org.hibernate.*</wls:resource-name>
+        </wls:prefer-application-resources>
     </wls:container-descriptor>
 
 
