@@ -28,10 +28,5 @@
       <artifactId>dropwizard-core</artifactId>
       <version>${dropwizard.version}</version>
     </dependency>
-    <dependency>
-      <groupId>be.fluid-it.tools.dw.it</groupId>
-      <artifactId>sample-servlets</artifactId>
-      <version>testing</version>
-    </dependency>
   </dependencies>
 </project>  

@@ -16,7 +16,7 @@ public class HelloServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         String simpleParam = getServletConfig().getInitParameter("simpleParam");
-        out.println("Hello World "+simpleParam);
+        out.print("Hello World "+simpleParam);
         out.close();
     }
 

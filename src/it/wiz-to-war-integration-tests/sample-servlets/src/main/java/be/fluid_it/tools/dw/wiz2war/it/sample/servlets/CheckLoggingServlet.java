@@ -20,7 +20,7 @@ public class CheckLoggingServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.info("Executing get ...");
         PrintWriter out = response.getWriter();
-        out.println("LoggerFactory type = " + StaticLoggerBinder.getSingleton().getLoggerFactory().getClass().getName());
+        out.print("LoggerFactory type = " + StaticLoggerBinder.getSingleton().getLoggerFactory().getClass().getName());
         out.close();
     }
 
