@@ -26,6 +26,7 @@
                             <dependency>${project.groupId}:sample-servlets</dependency>
                             <dependency>${project.groupId}:sample-web-resources</dependency>
                             <dependency>${project.groupId}:sample-wiz-app</dependency>
+                            <!--dependency>${project.groupId}:sample-wiz-swagger-app</dependency-->
                         </dependenciesToScan>
                     </configuration>
                     <executions>
