@@ -12,7 +12,10 @@ public class SwaggerUIIT {
     @Test
     public void checkSwaggerUI() throws IOException {
         URL url = new URL(ContextUrlSupport.contextUrl() + "/application/api-docs");
-        Assert.assertTrue(IOUtils.toString(url.openStream()).startsWith("{\"path\":\"/documented-hello-world\",\"description\":\"Hello operations\"}"));
+
+        String response = IOUtils.toString(url.openStream());
+        System.out.print(response);
+        Assert.assertTrue(response.contains("{\"path\":\"/documented-hello-world\",\"description\":\"Hello operations\"}"));
     }
 
 }

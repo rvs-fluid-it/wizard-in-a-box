@@ -23,7 +23,7 @@
     </modules>
 
     <properties>
-        <dropwizard.version>0.8.0-rc1</dropwizard.version>
+        <dropwizard.version>0.8.0</dropwizard.version>
     </properties>
 
     <dependencyManagement>
