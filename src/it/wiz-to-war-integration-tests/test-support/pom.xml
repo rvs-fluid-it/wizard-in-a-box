@@ -8,4 +8,16 @@
     <groupId>be.fluid-it.tools.dw.it</groupId>
     <artifactId>test-support</artifactId>
     <version>testing</version>
+    <!-- TODO -->
+    <properties>
+        <dropwizard.version>0.8.0-rc1</dropwizard.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-core</artifactId>
+            <version>${dropwizard.version}</version>
+        </dependency>
+    </dependencies>
 </project>

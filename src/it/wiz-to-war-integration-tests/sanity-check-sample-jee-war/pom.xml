@@ -56,6 +56,9 @@
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
+                <configuration>
+                    <port>8885</port>
+                </configuration>
                 <executions>
                     <execution>
                         <id>start-tomcat-server</id>

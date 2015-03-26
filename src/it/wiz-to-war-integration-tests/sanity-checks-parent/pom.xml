@@ -26,7 +26,7 @@
                             <dependency>${project.groupId}:sample-servlets</dependency>
                             <dependency>${project.groupId}:sample-web-resources</dependency>
                             <dependency>${project.groupId}:sample-wiz-app</dependency>
-                            <!--dependency>${project.groupId}:sample-wiz-swagger-app</dependency-->
+                            <dependency>${project.groupId}:sample-wiz-swagger-app</dependency>
                         </dependenciesToScan>
                     </configuration>
                     <executions>
@@ -60,7 +60,13 @@
                     <artifactId>tomcat7-maven-plugin</artifactId>
                     <version>2.0</version>
                     <configuration>
-                        <port>8888</port>
+                        <!--
+                             !!! Port can not be reused for all the sanity checks !!!
+                             The shutdown-goal does not block the build.
+                             Hence the Tomcat server will already be relaunched for the next sanity check
+                             before the Tomcat ports are released.
+                             Workaround: Use a different port for every sanity check
+                        -->
                         <path>${project.build.finalName}</path>
                     </configuration>
                 </plugin>
