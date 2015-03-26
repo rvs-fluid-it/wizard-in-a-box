@@ -11,8 +11,8 @@ import java.net.URL;
 public class SwaggerUIIT {
     @Test
     public void checkSwaggerUI() throws IOException {
-        URL url = new URL(ContextUrlSupport.contextUrl() + "/api-docs");
-        Assert.assertEquals("dummy",IOUtils.toString(url.openStream()));
+        URL url = new URL(ContextUrlSupport.contextUrl() + "/application/api-docs");
+        Assert.assertTrue(IOUtils.toString(url.openStream()).startsWith("{\"path\":\"/documented-hello-world\",\"description\":\"Hello operations\"}"));
     }
 
 }

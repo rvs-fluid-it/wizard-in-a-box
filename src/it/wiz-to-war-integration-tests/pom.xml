@@ -19,7 +19,7 @@
         <module>sanity-checks-parent</module>
         <module>sanity-check-sample-jee-war</module>
         <module>sanity-check-sample-wiz-app-war</module>
-        <!--module>sanity-check-sample-wiz-swagger-app-war</module-->
+        <module>sanity-check-sample-wiz-swagger-app-war</module>
     </modules>
 
     <properties>
