@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
-public class FakeServer extends Server {
-    private Logger logger = LoggerFactory.getLogger(FakeServer.class);
+public class JEEBridge extends Server {
+    private Logger logger = LoggerFactory.getLogger(JEEBridge.class);
 
     private final Environment environment;
 
@@ -28,7 +28,7 @@ public class FakeServer extends Server {
     private ServerState serverState = ServerState.STARTED;
 
 
-    public FakeServer(Environment environment) {
+    public JEEBridge(Environment environment) {
         this.environment = environment;
     }
 

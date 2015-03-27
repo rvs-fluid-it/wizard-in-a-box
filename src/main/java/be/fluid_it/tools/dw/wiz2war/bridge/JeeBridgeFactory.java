@@ -53,7 +53,7 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
 
     @Override
     public Server build(Environment environment) {
-        FakeServer server = new FakeServer(environment);
+        JEEBridge server = new JEEBridge(environment);
 
         environment.getAdminContext().setContextPath(adminContextPath);
         final Handler adminHandler = createAdminServlet(server,
