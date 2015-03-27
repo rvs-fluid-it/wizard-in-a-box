@@ -5,16 +5,12 @@
 		http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   
-  <groupId>be.fluid-it.tools.dw</groupId>
-  <artifactId>wiz-to-war</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <groupId>be.fluid-it.tools.dropwizard</groupId>
+  <artifactId>wizard-in-a-box</artifactId>
+  <version>0.8-0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <properties>
-      <!--dropwizard.version>0.8.0-rc2</dropwizard.version-->
-      <!-- Ok for JettyTomcat-->
-      <!-- but jar version clash on weblogic java.lang.ClassCastException: org.slf4j.impl.JDK14LoggerAdapter cannot be cast to ch.qos.logback.classic.Logger -->
-      <!--dropwizard.version>0.8.0-rc1</dropwizard.version-->
       <dropwizard.version>0.8.0</dropwizard.version>
   </properties>
   

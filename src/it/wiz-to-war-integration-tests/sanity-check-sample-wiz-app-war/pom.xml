@@ -42,8 +42,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>be.fluid-it.tools.dw</groupId>
-            <artifactId>wiz-to-war</artifactId>
+            <groupId>be.fluid-it.tools.dropwizard</groupId>
+            <artifactId>wizard-in-a-box</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
