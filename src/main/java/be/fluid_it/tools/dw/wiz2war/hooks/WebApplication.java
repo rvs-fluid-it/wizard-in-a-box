@@ -55,6 +55,9 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        if (theServletContext != null) {
+            throw new IllegalStateException("Multple WebListeners extending WebApplication detected. Only one is allowed!");
+        }
         theServletContext = sce.getServletContext();
         try {
             run(args);
@@ -70,6 +73,7 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
                 destroyable.destroy();
             }
         }
+        theServletContext = null;
     }
 
     public void registerDestroyable(Destroyable destroyable) {

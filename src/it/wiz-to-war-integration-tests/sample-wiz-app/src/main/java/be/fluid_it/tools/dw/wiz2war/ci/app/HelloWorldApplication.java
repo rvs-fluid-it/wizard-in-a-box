@@ -26,5 +26,6 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
                 configuration.getDefaultName()
         );
         environment.jersey().register(resource);
+        environment.getApplicationContext().getServletContext().setAttribute("hello.world.application.attribute.name", "***test***");
     }
 }

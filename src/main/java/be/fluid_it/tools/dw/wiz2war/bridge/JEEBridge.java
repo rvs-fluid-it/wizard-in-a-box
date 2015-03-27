@@ -1,5 +1,6 @@
 package be.fluid_it.tools.dw.wiz2war.bridge;
 
+import be.fluid_it.tools.dw.wiz2war.hooks.WebApplication;
 import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.util.component.LifeCycle;
@@ -79,6 +80,7 @@ public class JEEBridge extends Server {
         synchronized (attributesByName) {
             attributesByName.remove(name);
         }
+        WebApplication.servletContext().removeAttribute(name);
     }
 
     @Override
@@ -86,6 +88,7 @@ public class JEEBridge extends Server {
         synchronized (attributesByName) {
             attributesByName.put(name, attribute);
         }
+        WebApplication.servletContext().setAttribute(name, attribute);
     }
 
     // Handle methods are not supposed to be called
