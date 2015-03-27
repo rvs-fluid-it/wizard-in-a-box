@@ -68,6 +68,7 @@
                              Workaround: Use a different port for every sanity check
                         -->
                         <path>${project.build.finalName}</path>
+                        <contextFile>../sanity-checks-parent/src/main/tomcat/META-INF/context.xml</contextFile>
                     </configuration>
                 </plugin>
             </plugins>
