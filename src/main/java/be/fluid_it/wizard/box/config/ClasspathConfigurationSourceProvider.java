@@ -1,4 +1,4 @@
-package be.fluid_it.tools.dw.wiz2war.hooks;
+package be.fluid_it.wizard.box.config;
 
 import io.dropwizard.configuration.ConfigurationSourceProvider;
 

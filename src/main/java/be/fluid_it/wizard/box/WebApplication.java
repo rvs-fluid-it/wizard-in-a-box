@@ -1,5 +1,6 @@
-package be.fluid_it.tools.dw.wiz2war.hooks;
+package be.fluid_it.wizard.box;
 
+import be.fluid_it.wizard.box.config.ClasspathConfigurationSourceProvider;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Bootstrap;

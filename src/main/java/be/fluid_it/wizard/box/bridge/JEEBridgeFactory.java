@@ -1,6 +1,6 @@
-package be.fluid_it.tools.dw.wiz2war.bridge;
+package be.fluid_it.wizard.box.bridge;
 
-import be.fluid_it.tools.dw.wiz2war.hooks.WebApplication;
+import be.fluid_it.wizard.box.WebApplication;
 import com.codahale.metrics.jetty9.InstrumentedHandler;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
