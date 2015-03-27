@@ -28,11 +28,9 @@ public class JEEBridge extends Server {
 
     private ServerState serverState = ServerState.STARTED;
 
-
     public JEEBridge(Environment environment) {
         this.environment = environment;
     }
-
 
     @Override
     public Connector[] getConnectors() {
@@ -199,8 +197,5 @@ public class JEEBridge extends Server {
     protected void doStop() throws Exception {
         logger.info("Dummy stop Jetty server ...");
     }
-
-    // TODO
-    // UnsupportedOperationException
 
 }

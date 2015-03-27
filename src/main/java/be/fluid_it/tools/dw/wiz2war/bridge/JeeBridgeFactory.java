@@ -19,6 +19,7 @@ import javax.servlet.FilterRegistration;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 import java.util.Enumeration;
+import java.util.EventListener;
 import java.util.Map;
 
 @JsonTypeName("bridge")
@@ -82,6 +83,11 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
         }
         if (handler instanceof ServletContextHandler) {
             ServletContextHandler servletContextHandler = (ServletContextHandler)handler;
+            Map<String, String> servletContextInitParameters = servletContextHandler.getInitParams();
+            for (Map.Entry<String, String> entry : servletContextInitParameters.entrySet()) {
+                logger.info("ServletContext init parameter [" + entry.getKey() + "->" + entry.getValue() + "] detected ...");
+                WebApplication.servletContext().setInitParameter(entry.getKey(), entry.getValue());
+            }
             ServletMapping[] servletMappings = servletContextHandler.getServletHandler().getServletMappings();
             for (ServletMapping servletMapping : servletMappings) {
                 logger.info("Servlet mapping [" + servletMapping.getServletName() + "->" + print(prefixedPathSpecs(contextPath, servletMapping.getPathSpecs())) + "] detected ..." );
@@ -134,6 +140,10 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
                         break;
                     }
                 }
+                for (EventListener eventListener : servletContextHandler.getEventListeners()) {
+                    logger.info("EventListener on [" + eventListener.getClass().getName() + "] detected ...");
+                    WebApplication.servletContext().addListener(eventListener);
+                };
             }
             ContextHandler.Context dropWizardServletContext = servletContextHandler.getServletContext();
             Enumeration<String> names = dropWizardServletContext.getAttributeNames();
