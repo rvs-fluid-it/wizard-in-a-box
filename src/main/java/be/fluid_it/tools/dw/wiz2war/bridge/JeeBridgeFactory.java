@@ -4,8 +4,6 @@ import be.fluid_it.tools.dw.wiz2war.hooks.WebApplication;
 import com.codahale.metrics.jetty9.InstrumentedHandler;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import io.dropwizard.jetty.ConnectorFactory;
-import io.dropwizard.jetty.MutableServletContextHandler;
 import io.dropwizard.server.AbstractServerFactory;
 import io.dropwizard.server.ServerFactory;
 import io.dropwizard.setup.Environment;
@@ -13,7 +11,6 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.servlet.*;
-import org.eclipse.jetty.util.Attributes;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +22,8 @@ import java.util.Enumeration;
 import java.util.Map;
 
 @JsonTypeName("bridge")
-public class BridgeServerFactory extends AbstractServerFactory implements ServerFactory {
-    private Logger logger = LoggerFactory.getLogger(BridgeServerFactory.class);
+public class JEEBridgeFactory extends AbstractServerFactory implements ServerFactory {
+    private Logger logger = LoggerFactory.getLogger(JEEBridgeFactory.class);
 
     @NotEmpty
     private String applicationContextPath = "/application";
@@ -56,7 +53,7 @@ public class BridgeServerFactory extends AbstractServerFactory implements Server
 
     @Override
     public Server build(Environment environment) {
-        ServerAdapter server = new ServerAdapter(environment);
+        FakeServer server = new FakeServer(environment);
 
         environment.getAdminContext().setContextPath(adminContextPath);
         final Handler adminHandler = createAdminServlet(server,

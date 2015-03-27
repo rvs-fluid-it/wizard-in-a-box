@@ -36,7 +36,7 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
 
     @Override
     public void initialize(Bootstrap<C> bootstrap) {
-        // Swap the default FileConfigurationSourceProvider
+        // Swaps the default FileConfigurationSourceProvider
         bootstrap.setConfigurationSourceProvider(new ClasspathConfigurationSourceProvider());
         dropwizardApplication.initialize(bootstrap);
 

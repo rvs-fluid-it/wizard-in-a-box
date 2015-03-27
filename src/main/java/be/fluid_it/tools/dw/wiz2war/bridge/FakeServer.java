@@ -12,9 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
-// Adapts a Jetty server to a 3.0 servlet context
-public class ServerAdapter extends Server {
-    private Logger logger = LoggerFactory.getLogger(ServerAdapter.class);
+public class FakeServer extends Server {
+    private Logger logger = LoggerFactory.getLogger(FakeServer.class);
 
     private final Environment environment;
 
@@ -29,7 +28,7 @@ public class ServerAdapter extends Server {
     private ServerState serverState = ServerState.STARTED;
 
 
-    public ServerAdapter(Environment environment) {
+    public FakeServer(Environment environment) {
         this.environment = environment;
     }
 
