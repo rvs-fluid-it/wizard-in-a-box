@@ -6,8 +6,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>be.fluid-it.tools.dw.it</groupId>
-    <artifactId>wiz-to-war-integration-tests</artifactId>
+    <groupId>be.fluid-it.tools.dropwizard.it</groupId>
+    <artifactId>wizard-in-a-box-integration-tests</artifactId>
     <version>testing</version>
   </parent>
 

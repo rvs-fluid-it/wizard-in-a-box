@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>be.fluid-it.tools.dw.it</groupId>
+        <groupId>be.fluid-it.tools.dropwizard.it</groupId>
         <artifactId>sanity-checks-parent</artifactId>
         <version>testing</version>
         <relativePath>../sanity-checks-parent/pom.xml</relativePath>
