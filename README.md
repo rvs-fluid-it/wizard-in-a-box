@@ -64,18 +64,16 @@ Add an extra Maven module to your modules pom and create a pom for your new war 
 Wrap your Dropwizard application in a WebApplication:
 
 ```java
-...
-@WebListener
 package ...
 
 import ...
 
+@WebListener
 public class YourWebApplication  extends WebApplication<YourDropwizardConfiguration> {
     public YourWebApplication() {
         super(new YourDropwizardApplication(), "your-dropwizard-war-config.yml");
     }
 }
-
 ```
 
 Add the configuration file to the src/main/resources folder of the war module:
