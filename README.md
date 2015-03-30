@@ -26,8 +26,8 @@ Add an extra Maven module to your modules pom and create a pom for your new war 
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>be.fluid-it.tools.dw</groupId>
-            <artifactId>wiz-to-war</artifactId>
+            <groupId>be.fluid-it.tools.dropwizard</groupId>
+            <artifactId>wizard-in-a-box</artifactId>
             <version>0.8-1-1</version>
         </dependency>
         <!-- Logging implementation that you want to use underneath Slf4j --> 
