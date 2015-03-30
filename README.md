@@ -4,8 +4,10 @@ Wizard in a box
 Purpose:
 --------
 It makes a lot of sense to deliver Dropwizard applications as self-contained, executable jars. 
-But sometimes your delivery options will be severely limited by company standards. Often the JEE server on the production environment is fixed and can not be questioned. Even in this case using the Dropwizard library is still really worthwhile. The biggest advantage is that it makes it easy to create a production ready service. Without Dropwizard it would be a time consuming process to harden the service.
-'Wizard in a box' makes it trivial to deploy a Dropwizard application as a war on a JEE container. Also it allows you to use an embedded Jetty container during development and deploy to the targeted application server on the continous integration server. Hence the speed of development will be less impacted by infrastructural decisions.   
+But sometimes your delivery options will be severely limited by company standards. Often the JEE server on the production environment is fixed and can not be questioned. Even in this case using the Dropwizard library is still worthwhile. The biggest advantage is that it makes it easy to create a production ready service. Without Dropwizard it would be a time consuming process to harden the service.
+
+'Wizard in a box' makes it trivial to deploy a Dropwizard application as a war on a JEE container. Also it allows you to use an embedded Jetty container during development and deploy to the targeted application server on your continous integration server. 
+Hence the speed of development will be less impacted by infrastructural decisions.   
 
 Usage:
 ------
