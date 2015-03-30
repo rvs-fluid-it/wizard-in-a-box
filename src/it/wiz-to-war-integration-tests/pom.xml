@@ -63,7 +63,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>be.fluid-it.tools.dw.it</groupId>
+            <groupId>be.fluid-it.tools.dropwizard.it</groupId>
             <artifactId>test-support</artifactId>
             <version>testing</version>
             <scope>test</scope>
