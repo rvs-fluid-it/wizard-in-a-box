@@ -1,5 +1,0 @@
-template: Hello, %s!
-defaultName: Stranger
-
-server:
-  type: bridge
