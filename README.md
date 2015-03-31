@@ -92,6 +92,10 @@ server:
 
 If needed add application server specific files to the  src/main/webapp folder (Tomcat -> META-INF/context.xml, Weblogic -> WEB-INF/weblogic.xml, ...)
 
+Sample:
+-------
+See src/it/wizard-in-a-box-integration-tests/sanity-check-sample-wiz-app-war (The integration test can serve as a sample as well)
+
 Under the hood:
 ---------------
 
