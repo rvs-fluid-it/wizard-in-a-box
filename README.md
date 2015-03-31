@@ -1,4 +1,5 @@
-Wizard in a box
+![Wizard in a box](/src/doc/wizard-in-a-box.png?raw=true) 
+Wizard in a box  
 ===============
 
 Purpose:
