@@ -91,6 +91,16 @@ server:
 ...
 ```
 
+Default context paths are ````/application``` for main application
+and ````/admin``` for admin application. Those path can be customized in the configuration
+
+```yaml
+server:
+  type: bridge
+  applicationContextPath: /api/v1
+  adminContextPath: /admin
+```
+
 If needed add application server specific files to the  src/main/webapp folder (Tomcat -> META-INF/context.xml, Weblogic -> WEB-INF/weblogic.xml, ...)
 
 Sample:
