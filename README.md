@@ -91,8 +91,8 @@ server:
 ...
 ```
 
-Default context paths are ````/application``` for main application
-and ````/admin``` for admin application. Those path can be customized in the configuration
+Default context paths are ```/application``` for main application
+and ```/admin``` for admin application. Those path can be customized in the configuration
 
 ```yaml
 server:
