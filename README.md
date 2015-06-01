@@ -33,7 +33,7 @@ Add an extra Maven module to your modules pom and create a pom for your new war 
         <dependency>
             <groupId>be.fluid-it.tools.dropwizard</groupId>
             <artifactId>wizard-in-a-box</artifactId>
-            <version>0.8-1-1</version>
+            <version>0.8-1-2</version>
         </dependency>
         <!-- Logging implementation that you want to use underneath Slf4j --> 
         <dependency>
@@ -100,6 +100,19 @@ server:
   applicationContextPath: /api/v1
   adminContextPath: /admin
 ```
+
+Assets (see http://www.dropwizard.io/manual/core.html#serving-assets) can be served from the root context of the web application.
+
+```yaml
+server:
+  type: bridge
+  applicationContextPath: /api/v1
+  adminContextPath: /admin
+  servletsMappedFromRootContext:
+    - assets  
+```
+The property ```servletsMappedFromRootContext``` is the list of application servlet which should be directly coupled to the webapp root context. Hence they will not be prefixed with the application context path. 
+
 
 If needed add application server specific files to the  src/main/webapp folder (Tomcat -> META-INF/context.xml, Weblogic -> WEB-INF/weblogic.xml, ...)
 
