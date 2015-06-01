@@ -30,6 +30,7 @@
           <version>2.18.1</version>
           <configuration>
             <dependenciesToScan>
+              <dependency>${project.groupId}:sample-assets</dependency>
               <dependency>${project.groupId}:sample-servlets</dependency>
               <dependency>${project.groupId}:sample-web-resources</dependency>
               <dependency>${project.groupId}:sample-wiz-app</dependency>

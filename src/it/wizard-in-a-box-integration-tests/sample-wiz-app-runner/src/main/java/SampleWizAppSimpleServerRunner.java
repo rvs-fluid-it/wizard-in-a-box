@@ -1,8 +1,8 @@
-import be.fluid_it.tools.dw.wiz2war.ci.app.HelloWorldApplication;
-import be.fluid_it.tools.dw.wiz2war.it.support.WizRunner;
+import be.fluid_it.tools.dropwizard.box.it.app.HelloWorldApplication;
+import be.fluid_it.tools.dropwizard.box.it.support.WizRunner;
 
 public class SampleWizAppSimpleServerRunner {
     public static void main(String[] args) throws Exception {
-        new WizRunner(new HelloWorldApplication(), "./target/classes/hello-world-as-dw-jar-simple-server.yml").run();
+        new WizRunner(new HelloWorldApplication(), "sample-wiz-app-runner", "hello-world-as-dw-jar-simple-server.yml").run();
     }
 }

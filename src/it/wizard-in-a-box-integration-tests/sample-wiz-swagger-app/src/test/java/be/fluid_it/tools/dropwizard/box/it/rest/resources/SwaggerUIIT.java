@@ -11,7 +11,7 @@ import java.net.URL;
 public class SwaggerUIIT {
     @Test
     public void checkSwaggerUI() throws IOException {
-        URL url = new URL(ContextUrlSupport.contextUrl() + "/application/api-docs");
+        URL url = new URL(ContextUrlSupport.contextUrl() + "/api/api-docs");
 
         String response = IOUtils.toString(url.openStream());
         System.out.print(response);

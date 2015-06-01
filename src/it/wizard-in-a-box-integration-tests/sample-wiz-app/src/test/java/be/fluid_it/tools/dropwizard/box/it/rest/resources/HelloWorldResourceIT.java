@@ -12,7 +12,7 @@ public class HelloWorldResourceIT {
     @Test
     public void checkHelloWorldResource() throws IOException {
         URL url = new URL(ContextUrlSupport.contextUrl() +
-                "/application/hello-world?name=Merlin");
+                "/api/hello-world?name=Merlin");
         Assert.assertEquals("{\"id\":1,\"content\":\"Hello, Merlin!\"}", IOUtils.toString(url.openStream()));
     }
 

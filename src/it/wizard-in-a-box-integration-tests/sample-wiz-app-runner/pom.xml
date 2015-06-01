@@ -23,12 +23,12 @@
             <artifactId>logback-classic</artifactId>
         </dependency>
         <dependency>
-            <groupId>be.fluid-it.tools.dw.it</groupId>
+            <groupId>be.fluid-it.tools.dropwizard.it</groupId>
             <artifactId>sample-wiz-app</artifactId>
             <version>testing</version>
         </dependency>
         <dependency>
-            <groupId>be.fluid-it.tools.dw.it</groupId>
+            <groupId>be.fluid-it.tools.dropwizard.it</groupId>
             <artifactId>test-support</artifactId>
             <version>testing</version>
         </dependency>

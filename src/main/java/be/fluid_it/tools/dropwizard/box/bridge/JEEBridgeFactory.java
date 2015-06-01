@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
+import javax.validation.constraints.NotNull;
 import java.util.Enumeration;
 import java.util.EventListener;
 import java.util.Map;
@@ -31,6 +32,9 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
 
     @NotEmpty
     private String adminContextPath = "/admin";
+
+    @NotNull
+    private String[] servletsMappedFromRootContext = new String[] {};
 
     @JsonProperty
     public String getApplicationContextPath() {
@@ -50,6 +54,24 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
     @JsonProperty
     public void setAdminContextPath(String contextPath) {
         this.adminContextPath = contextPath;
+    }
+
+    @JsonProperty
+    public String[] getServletsMappedFromRootContext() {
+        return servletsMappedFromRootContext;
+    }
+
+    @JsonProperty
+    public void setServletsMappedFromRootContext(String[] servletsMappedFromRootContext) {
+        this.servletsMappedFromRootContext = servletsMappedFromRootContext;
+    }
+
+    public Logger getLogger() {
+        return logger;
+    }
+
+    public void setLogger(Logger logger) {
+        this.logger = logger;
     }
 
     @Override
@@ -90,7 +112,9 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
             }
             ServletMapping[] servletMappings = servletContextHandler.getServletHandler().getServletMappings();
             for (ServletMapping servletMapping : servletMappings) {
-                logger.info("Servlet mapping [" + servletMapping.getServletName() + "->" + print(prefixedPathSpecs(contextPath, servletMapping.getPathSpecs())) + "] detected ..." );
+                String servletName = servletMapping.getServletName();
+                String[] servletPathSpecs = servletMapping.getPathSpecs();
+                logger.info("Servlet mapping [" + servletName + "->" + print(isContextPrefixed(servletName) ? prefixedPathSpecs(contextPath, servletPathSpecs): servletPathSpecs) + "] detected ..." );
             }
             ServletHolder[] servlets = servletContextHandler.getServletHandler().getServlets();
             for (ServletHolder servletHolder : servlets) {
@@ -104,7 +128,8 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
                     }
                     for (ServletMapping servletMapping : servletMappings) {
                         if (servletName.equals(servletMapping.getServletName())) {
-                            servletRegistration.addMapping(prefixedPathSpecs(contextPath, servletMapping.getPathSpecs()));
+                            String[] servletPathSpecs = servletMapping.getPathSpecs();
+                            servletRegistration.addMapping(isContextPrefixed(servletName) ? prefixedPathSpecs(contextPath, servletPathSpecs) : servletPathSpecs);
                             break;
                         }
                     }
@@ -153,6 +178,15 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
                 WebApplication.servletContext().setAttribute(name, dropWizardServletContext.getAttribute(name));
             }
         }
+    }
+
+    private boolean isContextPrefixed(String servletName) {
+        if (servletName != null) {
+            for (String rootContextServletName : servletsMappedFromRootContext) {
+                if (servletName.equals(rootContextServletName)) return false;
+            }
+        }
+        return true;
     }
 
     private String[] prefixedPathSpecs(String contextPath, String[] pathSpecs) {

@@ -3,3 +3,7 @@ defaultName: Stranger
 
 server:
   type: bridge
+  applicationContextPath: /api
+  adminContextPath: /admin
+  servletsMappedFromRootContext:
+    - assets

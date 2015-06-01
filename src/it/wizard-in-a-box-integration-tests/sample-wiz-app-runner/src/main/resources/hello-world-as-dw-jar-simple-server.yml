@@ -3,7 +3,7 @@ defaultName: Stranger
 
 server:
   type: simple
-  applicationContextPath: /application
+  applicationContextPath: /api
   adminContextPath: /admin
   connector:
     type: http

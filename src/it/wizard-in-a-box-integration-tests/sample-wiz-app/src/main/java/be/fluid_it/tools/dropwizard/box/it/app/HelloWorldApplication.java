@@ -2,6 +2,7 @@ package be.fluid_it.tools.dropwizard.box.it.app;
 
 import be.fluid_it.tools.dropwizard.box.it.rest.resources.HelloWorldResource;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -17,6 +18,7 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
 
     @Override
     public void initialize(Bootstrap<HelloWorldConfiguration> bootstrap) {
+        bootstrap.addBundle(new AssetsBundle("/assets", "/static"));
     }
 
     @Override

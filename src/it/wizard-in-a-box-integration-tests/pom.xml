@@ -13,6 +13,7 @@
     <modules>
         <module>test-support</module>
         <module>sample-servlets</module>
+        <module>sample-assets</module>
         <module>sample-web-resources</module>
         <module>sample-wiz-app</module>
         <module>sample-wiz-swagger-app</module>
@@ -29,7 +30,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>be.fluid-it.tools.dw</groupId>
+                <groupId>be.fluid-it.tools.dropwizard</groupId>
                 <artifactId>wiz-to-war</artifactId>
                 <version>testing</version>
             </dependency>
