@@ -111,7 +111,7 @@ server:
   servletsMappedFromRootContext:
     - assets  
 ```
-The property ```servletsMappedFromRootContext``` is the list of application servlet which should be directly coupled to the webapp root context. Hence they will not be prefixed with the application context path. 
+The property ```servletsMappedFromRootContext``` is the list of application servlets which should be directly coupled to the webapp root context. Hence they will not be prefixed with the application context path. 
 
 
 If needed add application server specific files to the  src/main/webapp folder (Tomcat -> META-INF/context.xml, Weblogic -> WEB-INF/weblogic.xml, ...)
