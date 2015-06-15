@@ -1,27 +1,37 @@
 package be.fluid_it.tools.dropwizard.box.bridge;
 
-import be.fluid_it.tools.dropwizard.box.WebApplication;
-import com.codahale.metrics.jetty9.InstrumentedHandler;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
 import io.dropwizard.server.AbstractServerFactory;
 import io.dropwizard.server.ServerFactory;
 import io.dropwizard.setup.Environment;
-import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.ContextHandler;
-import org.eclipse.jetty.servlet.*;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.Enumeration;
+import java.util.EventListener;
+import java.util.Map;
 
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 import javax.validation.constraints.NotNull;
-import java.util.Enumeration;
-import java.util.EventListener;
-import java.util.Map;
+
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.FilterMapping;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlet.ServletMapping;
+import org.eclipse.jetty.util.thread.ThreadPool;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import be.fluid_it.tools.dropwizard.box.WebApplication;
+
+import com.codahale.metrics.jetty9.InstrumentedHandler;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("bridge")
 public class JEEBridgeFactory extends AbstractServerFactory implements ServerFactory {
@@ -75,8 +85,19 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
     }
 
     @Override
+    protected Server buildServer(LifecycleEnvironment lifecycle, ThreadPool threadPool) {
+        final JEEBridge server = new JEEBridge(threadPool);
+        server.addLifeCycleListener(buildSetUIDListener());
+        lifecycle.attach(server);
+        return server;
+    }
+
+    @Override
     public Server build(Environment environment) {
-        JEEBridge server = new JEEBridge(environment);
+        final ThreadPool threadPool = createThreadPool(environment.metrics());
+        Server server = buildServer(environment.lifecycle(), threadPool);
+
+        WebApplication.servletContext().setAttribute("fakeJettyServer", server);
 
         environment.getAdminContext().setContextPath(adminContextPath);
         final Handler adminHandler = createAdminServlet(server,
@@ -99,12 +120,12 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
     private void registerOnJEEServletContext(String contextPath, Handler jettyHandler) {
         Handler handler;
         if (jettyHandler instanceof InstrumentedHandler) {
-            handler = ((InstrumentedHandler)jettyHandler).getHandler();
+            handler = ((InstrumentedHandler) jettyHandler).getHandler();
         } else {
             handler = jettyHandler;
         }
         if (handler instanceof ServletContextHandler) {
-            ServletContextHandler servletContextHandler = (ServletContextHandler)handler;
+            ServletContextHandler servletContextHandler = (ServletContextHandler) handler;
             Map<String, String> servletContextInitParameters = servletContextHandler.getInitParams();
             for (Map.Entry<String, String> entry : servletContextInitParameters.entrySet()) {
                 logger.info("ServletContext init parameter [" + entry.getKey() + "->" + entry.getValue() + "] detected ...");
@@ -114,7 +135,7 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
             for (ServletMapping servletMapping : servletMappings) {
                 String servletName = servletMapping.getServletName();
                 String[] servletPathSpecs = servletMapping.getPathSpecs();
-                logger.info("Servlet mapping [" + servletName + "->" + print(isContextPrefixed(servletName) ? prefixedPathSpecs(contextPath, servletPathSpecs): servletPathSpecs) + "] detected ..." );
+                logger.info("Servlet mapping [" + servletName + "->" + print(isContextPrefixed(servletName) ? prefixedPathSpecs(contextPath, servletPathSpecs) : servletPathSpecs) + "] detected ...");
             }
             ServletHolder[] servlets = servletContextHandler.getServletHandler().getServlets();
             for (ServletHolder servletHolder : servlets) {
@@ -139,7 +160,7 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
             }
             FilterMapping[] filterMappings = servletContextHandler.getServletHandler().getFilterMappings();
             for (FilterMapping filterMapping : filterMappings) {
-                logger.info("Filter mapping [" + filterMapping.getFilterName() + "->" + print(prefixedPathSpecs(contextPath,filterMapping.getPathSpecs())) + "] detected ..." );
+                logger.info("Filter mapping [" + filterMapping.getFilterName() + "->" + print(prefixedPathSpecs(contextPath, filterMapping.getPathSpecs())) + "] detected ...");
             }
             FilterHolder[] filters = servletContextHandler.getServletHandler().getFilters();
             for (FilterHolder filterHolder : filters) {
@@ -174,7 +195,7 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
             Enumeration<String> names = dropWizardServletContext.getAttributeNames();
             while (names.hasMoreElements()) {
                 String name = names.nextElement();
-                logger.info("Attribute [" + name + "->" + dropWizardServletContext.getAttribute(name) + "] detected ..." );
+                logger.info("Attribute [" + name + "->" + dropWizardServletContext.getAttribute(name) + "] detected ...");
                 WebApplication.servletContext().setAttribute(name, dropWizardServletContext.getAttribute(name));
             }
         }
@@ -190,9 +211,9 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
     }
 
     private String[] prefixedPathSpecs(String contextPath, String[] pathSpecs) {
-        if (pathSpecs == null) return new String [] {contextPath};
+        if (pathSpecs == null) return new String[] { contextPath };
         String[] prefixedPathSpecs = new String[pathSpecs.length];
-        for (int i=0; i < pathSpecs.length; i++) {
+        for (int i = 0; i < pathSpecs.length; i++) {
             prefixedPathSpecs[i] = contextPath + pathSpecs[i];
         }
         return prefixedPathSpecs;

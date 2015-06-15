@@ -9,6 +9,9 @@ import io.dropwizard.setup.Environment;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+
+import org.eclipse.jetty.server.Server;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,8 +22,8 @@ import java.util.List;
 public abstract class WebApplication<C extends Configuration> extends Application<C> implements ServletContextListener {
     private static ServletContext theServletContext;
     private final List<Destroyable> destroyables = new LinkedList<Destroyable>();
-    private final Application<C> dropwizardApplication;
-    private final String[] args;
+    protected final Application<C> dropwizardApplication;
+    protected final String[] args;
 
     public static ServletContext servletContext() {
         return theServletContext;
@@ -72,6 +75,14 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
         synchronized (destroyables) {
             for (Destroyable destroyable : destroyables) {
                 destroyable.destroy();
+            }
+        }
+        Server server = (Server)theServletContext.getAttribute("fakeJettyServer");
+        if (server != null) {
+            try {
+                server.stop();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         theServletContext = null;
