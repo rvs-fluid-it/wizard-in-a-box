@@ -33,7 +33,7 @@
   </scm>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <dropwizard.version>0.8.0</dropwizard.version>
+    <dropwizard.version>0.8.1</dropwizard.version>
   </properties>
   <distributionManagement>
     <repository>
