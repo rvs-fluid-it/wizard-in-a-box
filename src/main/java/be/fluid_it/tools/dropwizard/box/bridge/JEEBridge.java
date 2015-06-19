@@ -1,95 +1,43 @@
 package be.fluid_it.tools.dropwizard.box.bridge;
 
-import be.fluid_it.tools.dropwizard.box.WebApplication;
-import io.dropwizard.setup.Environment;
-import org.eclipse.jetty.server.*;
-import org.eclipse.jetty.util.component.LifeCycle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.*;
+
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.HttpChannel;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.util.thread.ThreadPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JEEBridge extends Server {
     private Logger logger = LoggerFactory.getLogger(JEEBridge.class);
 
-    private final Environment environment;
+    private final Connector[] connectors = new Connector[0];
+    private final Handler[] handlers = new Handler[0];
 
-    private final List<Connector> connectors = new LinkedList<Connector>();
-    private final Map<String, Object> attributesByName = new HashMap<String, Object>();
-    private final List<Handler> handlers = new LinkedList<Handler>();
-
-    private enum ServerState {
-        FAILED, STARTING, STARTED, STOPPING, STOPPED;
-    }
-
-    private ServerState serverState = ServerState.STARTED;
-
-    public JEEBridge(Environment environment) {
-        this.environment = environment;
+    public JEEBridge(ThreadPool threadPool) {
+        super(threadPool);
     }
 
     @Override
     public Connector[] getConnectors() {
-        synchronized (connectors) {
-            return connectors.toArray(new Connector[connectors.size()]);
-        }
+        return connectors;
     }
 
     @Override
     public void addConnector(Connector connector) {
-        synchronized (connectors) {
-            connectors.add(connector);
-        }
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void removeConnector(Connector connector) {
-        connectors.remove(connector);
     }
-
-
-    @Override
-    public void clearAttributes() {
-        synchronized (attributesByName) {
-            attributesByName.clear();
-        }
-    }
-
-    @Override
-    public Object getAttribute(String name) {
-        synchronized (attributesByName) {
-            return attributesByName.get(name);
-        }
-    }
-
-    @Override
-    public Enumeration<String> getAttributeNames() {
-        synchronized (attributesByName) {
-            return new Vector(attributesByName.keySet()).elements();
-        }
-    }
-
-    @Override
-    public void removeAttribute(String name) {
-        synchronized (attributesByName) {
-            attributesByName.remove(name);
-        }
-        WebApplication.servletContext().removeAttribute(name);
-    }
-
-    @Override
-    public void setAttribute(String name, Object attribute) {
-        synchronized (attributesByName) {
-            attributesByName.put(name, attribute);
-        }
-        WebApplication.servletContext().setAttribute(name, attribute);
-    }
-
-    // Handle methods are not supposed to be called
 
     @Override
     public void handle(HttpChannel<?> connection) throws IOException, ServletException {
@@ -103,23 +51,16 @@ public class JEEBridge extends Server {
 
     @Override
     public Handler getHandler() {
-        // TODO
         return null;
     }
 
     @Override
     public Handler[] getHandlers() {
-        synchronized (handlers) {
-            return handlers.toArray(new Handler[handlers.size()]);
-        }
+        return handlers;
     }
 
     @Override
     public void setHandler(Handler handler) {
-        logger.info("Set handler ", handler.getClass().getName());
-        synchronized (handlers) {
-            handlers.add(handler);
-        }
     }
 
     @Override
@@ -127,75 +68,31 @@ public class JEEBridge extends Server {
         throw new UnsupportedOperationException();
     }
 
-    // Server Lifecycle
-
-    @Override
-    public boolean isRunning() {
-        return STARTED.equals(serverState);
-    }
-
-    @Override
-    public boolean isStarted() {
-        return STARTED.equals(serverState);
-    }
-
-    @Override
-    public boolean isStarting() {
-        return STARTING.equals(serverState);
-    }
-
-    @Override
-    public boolean isStopping() {
-        return STOPPING.equals(serverState);
-    }
-
-    @Override
-    public boolean isStopped() {
-        return STOPPED.equals(serverState);
-    }
-
-    @Override
-    public boolean isFailed() {
-        return FAILED.equals(serverState);
-    }
-
-    private final List<LifeCycle.Listener> lifeCycleListeners = new LinkedList<LifeCycle.Listener>();
-
-    @Override
-    public void addLifeCycleListener(LifeCycle.Listener listener) {
-        synchronized (lifeCycleListeners) {
-            lifeCycleListeners.add(listener);
-        }
-    }
-
-    @Override
-    public void removeLifeCycleListener(LifeCycle.Listener listener) {
-        synchronized (lifeCycleListeners) {
-            lifeCycleListeners.remove(listener);
-        }
-    }
-
-    @Override
-    public String getState() {
-        return serverState != null ? serverState.name() : null;
-    }
-
     @Override
     public long getStopTimeout() {
         return 0;
     }
 
+    @Override
+    public boolean isDumpAfterStart() {
+        return false;
+    }
 
-    // Start
+    @Override
+    public boolean isDumpBeforeStop() {
+        return false;
+    }
 
     @Override
     protected void doStart() throws Exception {
-        logger.info("Dummy start Jetty server ...");
+        logger.info("Start Bridged Jetty server ...");
+        super.doStart();
     }
 
     @Override
     protected void doStop() throws Exception {
-        logger.info("Dummy stop Jetty server ...");
+        logger.info("Stop Bridged Jetty server ...");
+        super.doStop();
     }
 
 }
