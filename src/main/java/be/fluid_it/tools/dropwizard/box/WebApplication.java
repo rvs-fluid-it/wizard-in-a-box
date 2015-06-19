@@ -3,8 +3,10 @@ package be.fluid_it.tools.dropwizard.box;
 import be.fluid_it.tools.dropwizard.box.config.ClasspathConfigurationSourceProvider;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
+import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.eclipse.jetty.util.component.LifeCycle;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -18,9 +20,9 @@ import java.util.List;
  */
 public abstract class WebApplication<C extends Configuration> extends Application<C> implements ServletContextListener {
     private static ServletContext theServletContext;
-    private final List<Destroyable> destroyables = new LinkedList<Destroyable>();
     private final Application<C> dropwizardApplication;
     private final String[] args;
+    private Environment dropwizardEnvironment;
 
     public static ServletContext servletContext() {
         return theServletContext;
@@ -51,6 +53,7 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
     @Override
     public void run(C configuration,
                     Environment environment) throws Exception {
+        dropwizardEnvironment = environment;
         dropwizardApplication.run(configuration, environment);
     }
 
@@ -69,17 +72,19 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        synchronized (destroyables) {
-            for (Destroyable destroyable : destroyables) {
-                destroyable.destroy();
+        if (dropwizardEnvironment != null) {
+          LifecycleEnvironment lifecycle = dropwizardEnvironment.lifecycle();
+          if (lifecycle != null) {
+            for (LifeCycle managed : lifecycle.getManagedObjects()) {
+              try {
+                managed.stop();
+              } catch (Exception e) {
+                throw new RuntimeException("Shutdown of Dropwizard failed ...", e);
+              }
             }
+          }
+          dropwizardEnvironment = null;
         }
         theServletContext = null;
-    }
-
-    public void registerDestroyable(Destroyable destroyable) {
-        synchronized (destroyables) {
-            destroyables.add(destroyable);
-        }
     }
 }
