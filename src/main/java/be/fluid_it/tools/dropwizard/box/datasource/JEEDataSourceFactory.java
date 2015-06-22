@@ -41,7 +41,7 @@ public class JEEDataSourceFactory extends DataSourceFactory {
     @Override
     public ManagedDataSource build(MetricRegistry metricRegistry, String name) {
         try {
-            return new JEEManagedDataSource(this.configuration.getName());
+            return new JEEManagedDataSource(this.configuration.getDatasourcesJndiKey(), this.configuration.getName());
         } catch (NamingException e) {
             throw new IllegalStateException("An error has occured while opening datasource " + name, e);
         }

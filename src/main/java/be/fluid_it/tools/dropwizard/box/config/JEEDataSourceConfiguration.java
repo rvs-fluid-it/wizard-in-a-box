@@ -16,6 +16,12 @@ import com.google.common.collect.Maps;
  * {@link DataSource} configured in your J2EE Container.
  */
 public class JEEDataSourceConfiguration {
+    // The default key matches Tomcat
+    // (Dependending on the target application server used you should eventually override the default)
+    // See https://tomcat.apache.org/tomcat-8.0-doc/jndi-resources-howto.html
+    @NotNull
+    private String datasourcesJndKey = "java:comp/env";
+
     @NotNull
     private String name;
 
@@ -39,4 +45,11 @@ public class JEEDataSourceConfiguration {
         return name;
     }
 
+    /**
+     * @return JNDI key under which the datasources are registered.
+     */
+    @JsonProperty
+    public String getDatasourcesJndiKey() {
+        return this.datasourcesJndKey;
+    }
 }

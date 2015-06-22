@@ -14,15 +14,14 @@ import javax.sql.DataSource;
 import io.dropwizard.db.ManagedDataSource;
 
 /**
- * A {@link DataSource} configured in JEE Container available through JNDI
- * under java:comp/env context.
+ * A {@link DataSource} configured in JEE Container available through JNDI.
  */
 public class JEEManagedDataSource implements ManagedDataSource {
     private DataSource jeeDatasource;
 
-    public JEEManagedDataSource(String dataSourceName) throws NamingException {
+    public JEEManagedDataSource(String datasourcesJndiKey, String dataSourceName) throws NamingException {
         InitialContext ic = new InitialContext();
-        Context envCtx = (Context) ic.lookup("java:comp/env");
+        Context envCtx = (Context) ic.lookup(datasourcesJndiKey);
         jeeDatasource = (DataSource) envCtx.lookup(dataSourceName);
     }
 
