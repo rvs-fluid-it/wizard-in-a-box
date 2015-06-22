@@ -25,6 +25,12 @@
       <organization>Fluid IT</organization>
       <organizationUrl>http://www.fluid-it.be</organizationUrl>
     </developer>
+    <developer>
+      <name>Rémi Alvergnat</name>
+      <email>toilal.dev@gmail.com</email>
+      <organization>Pragmasphere</organization>
+      <organizationUrl>http://www.pragmasphere.com</organizationUrl>
+    </developer>
   </developers>
   <scm>
     <connection>scm:git:git@github.com:rvs-fluid-it/wizard-in-a-box.git</connection>
