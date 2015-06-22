@@ -5,8 +5,6 @@ import io.dropwizard.Configuration;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.db.DatabaseConfiguration;
 import io.dropwizard.db.ManagedDataSource;
-import io.dropwizard.hibernate.HibernateBundle;
-import io.dropwizard.migrations.MigrationsBundle;
 
 import java.util.Map;
 
@@ -26,9 +24,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * from your database bundle to return this factory, using a
  * {@link JEEDataSourceConfiguration} defined in your application
  * {@link Configuration}.
- * 
- * @see HibernateBundle#getDataSourceFactory(io.dropwizard.Configuration)
- * @see MigrationsBundle#getDataSourceFactory(io.dropwizard.Configuration)
  */
 public class JEEDataSourceFactory extends DataSourceFactory {
     private JEEDataSourceConfiguration configuration;
