@@ -1,6 +1,9 @@
 package be.fluid_it.tools.dropwizard.box;
 
+import be.fluid_it.tools.dropwizard.box.config.BridgedConfigurationFactoryFactory;
 import be.fluid_it.tools.dropwizard.box.config.ClasspathConfigurationSourceProvider;
+import be.fluid_it.tools.dropwizard.box.config.ConfigurationBridge;
+import be.fluid_it.tools.dropwizard.box.config.JndiConfigurationBridge;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
@@ -23,6 +26,7 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
     private final Application<C> dropwizardApplication;
     private final String[] args;
     private Environment dropwizardEnvironment;
+    private ConfigurationBridge configurationBridge;
 
     public static ServletContext servletContext() {
         return theServletContext;
@@ -37,8 +41,19 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
         this.args = args;
     }
 
+    public void setConfigurationBridge(ConfigurationBridge configurationBridge) {
+        this.configurationBridge = configurationBridge;
+    }
+
+    public ConfigurationBridge getConfigurationBridge() {
+        return configurationBridge;
+    }
+
     @Override
     public void initialize(Bootstrap<C> bootstrap) {
+        if (configurationBridge != null) {
+            bootstrap.setConfigurationFactoryFactory(new BridgedConfigurationFactoryFactory<C>(configurationBridge));
+        }
         // Swaps the default FileConfigurationSourceProvider
         bootstrap.setConfigurationSourceProvider(new ClasspathConfigurationSourceProvider());
         dropwizardApplication.initialize(bootstrap);
