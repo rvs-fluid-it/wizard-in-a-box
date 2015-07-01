@@ -44,7 +44,7 @@
     <dependency>
       <groupId>be.fluid-it.tools.dropwizard</groupId>
       <artifactId>wizard-in-a-box</artifactId>
-      <version>${project.version}</version>
+      <version>${it.project.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
