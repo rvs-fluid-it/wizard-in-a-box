@@ -2,6 +2,8 @@
 Wizard in a box  
 ===============
 
+[![Build Status](https://api.travis-ci.org/rvs-fluid-it/wizard-in-a-box.svg)](https://travis-ci.org/rvs-fluid-it/wizard-in-a-box)
+
 Purpose:
 --------
 It makes a lot of sense to deliver Dropwizard applications as self-contained, executable jars. 
