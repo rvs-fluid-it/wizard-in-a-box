@@ -7,7 +7,7 @@
   
   <groupId>be.fluid-it.tools.dropwizard</groupId>
   <artifactId>wizard-in-a-box</artifactId>
-  <version>0.8-1-SNAPSHOT</version>
+  <version>0.8-2-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Wizard in a box</name>
   <description>Wrapper to deploy a DropWizard application as a war on a JEE container</description>
@@ -39,7 +39,7 @@
   </scm>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <dropwizard.version>0.8.1</dropwizard.version>
+    <dropwizard.version>0.8.2</dropwizard.version>
   </properties>
   <distributionManagement>
     <repository>
