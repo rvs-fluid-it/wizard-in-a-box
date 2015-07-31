@@ -1,9 +1,9 @@
 package be.fluid_it.tools.dropwizard.box.bridge;
 
 import be.fluid_it.tools.dropwizard.box.WebApplication;
-import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.util.component.LifeCycle;
+import org.eclipse.jetty.util.thread.ThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,21 +16,19 @@ import java.util.*;
 public class JEEBridge extends Server {
     private Logger logger = LoggerFactory.getLogger(JEEBridge.class);
 
-    private final Environment environment;
-
     private final List<Connector> connectors = new LinkedList<Connector>();
     private final Map<String, Object> attributesByName = new HashMap<String, Object>();
     private final List<Handler> handlers = new LinkedList<Handler>();
+
+    public JEEBridge(ThreadPool threadPool) {
+        super(threadPool);
+    }
 
     private enum ServerState {
         FAILED, STARTING, STARTED, STOPPING, STOPPED;
     }
 
     private ServerState serverState = ServerState.STARTED;
-
-    public JEEBridge(Environment environment) {
-        this.environment = environment;
-    }
 
     @Override
     public Connector[] getConnectors() {
@@ -189,13 +187,25 @@ public class JEEBridge extends Server {
     // Start
 
     @Override
+    public boolean isDumpAfterStart() {
+        return false;
+    }
+
+    @Override
+    public boolean isDumpBeforeStop() {
+        return false;
+    }
+
+    @Override
     protected void doStart() throws Exception {
-        logger.info("Dummy start Jetty server ...");
+        logger.info("Start Bridged Jetty server ...");
+        super.doStart();
     }
 
     @Override
     protected void doStop() throws Exception {
-        logger.info("Dummy stop Jetty server ...");
+        logger.info("Stop Bridged Jetty server ...");
+        super.doStop();
     }
 
 }

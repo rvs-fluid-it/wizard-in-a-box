@@ -9,6 +9,7 @@ import io.dropwizard.Configuration;
 import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.component.LifeCycle;
 
 import javax.servlet.ServletContext;
@@ -87,18 +88,13 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        if (dropwizardEnvironment != null) {
-          LifecycleEnvironment lifecycle = dropwizardEnvironment.lifecycle();
-          if (lifecycle != null) {
-            for (LifeCycle managed : lifecycle.getManagedObjects()) {
-              try {
-                managed.stop();
-              } catch (Exception e) {
+        Server server = (Server)theServletContext.getAttribute("fakeJettyServer");
+        if (server != null) {
+            try {
+                server.stop();
+            } catch (Exception e) {
                 throw new RuntimeException("Shutdown of Dropwizard failed ...", e);
-              }
             }
-          }
-          dropwizardEnvironment = null;
         }
         theServletContext = null;
     }
