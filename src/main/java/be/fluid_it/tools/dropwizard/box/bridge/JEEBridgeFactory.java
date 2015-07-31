@@ -1,27 +1,37 @@
 package be.fluid_it.tools.dropwizard.box.bridge;
 
-import be.fluid_it.tools.dropwizard.box.WebApplication;
-import com.codahale.metrics.jetty9.InstrumentedHandler;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
 import io.dropwizard.server.AbstractServerFactory;
 import io.dropwizard.server.ServerFactory;
 import io.dropwizard.setup.Environment;
-import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.ContextHandler;
-import org.eclipse.jetty.servlet.*;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.Enumeration;
+import java.util.EventListener;
+import java.util.Map;
 
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 import javax.validation.constraints.NotNull;
-import java.util.Enumeration;
-import java.util.EventListener;
-import java.util.Map;
+
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.FilterMapping;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlet.ServletMapping;
+import org.eclipse.jetty.util.thread.ThreadPool;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import be.fluid_it.tools.dropwizard.box.WebApplication;
+
+import com.codahale.metrics.jetty9.InstrumentedHandler;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("bridge")
 public class JEEBridgeFactory extends AbstractServerFactory implements ServerFactory {
@@ -75,8 +85,19 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
     }
 
     @Override
+    protected Server buildServer(LifecycleEnvironment lifecycle, ThreadPool threadPool) {
+        final JEEBridge server = new JEEBridge(threadPool);
+        server.addLifeCycleListener(buildSetUIDListener());
+        lifecycle.attach(server);
+        return server;
+    }
+
+    @Override
     public Server build(Environment environment) {
-        JEEBridge server = new JEEBridge(environment);
+        final ThreadPool threadPool = createThreadPool(environment.metrics());
+        Server server = buildServer(environment.lifecycle(), threadPool);
+
+        WebApplication.servletContext().setAttribute("fakeJettyServer", server);
 
         environment.getAdminContext().setContextPath(adminContextPath);
         final Handler adminHandler = createAdminServlet(server,
