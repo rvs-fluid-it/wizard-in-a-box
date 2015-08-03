@@ -35,7 +35,7 @@ Add an extra Maven module to your modules pom and create a pom for your new war 
         <dependency>
             <groupId>be.fluid-it.tools.dropwizard</groupId>
             <artifactId>wizard-in-a-box</artifactId>
-            <version>0.8-1-3</version>
+            <version>0.8-2-1</version>
         </dependency>
         <!-- Logging implementation that you want to use underneath Slf4j --> 
         <dependency>
