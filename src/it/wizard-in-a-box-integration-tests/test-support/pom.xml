@@ -8,9 +8,9 @@
     <groupId>be.fluid-it.tools.dropwizard.it</groupId>
     <artifactId>test-support</artifactId>
     <version>testing</version>
-    <!-- TODO Get rid of duplication -->
+
     <properties>
-        <dropwizard.version>0.8.0</dropwizard.version>
+        <dropwizard.version>0.9.0</dropwizard.version>
     </properties>
 
     <dependencies>
