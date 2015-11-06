@@ -3,6 +3,7 @@ Wizard in a box
 ===============
 
 [![Build Status](https://api.travis-ci.org/rvs-fluid-it/wizard-in-a-box.svg)](https://travis-ci.org/rvs-fluid-it/wizard-in-a-box)
+[![Mvn Version](https://img.shields.io/maven-central/v/be.fluid-it.tools.dropwizard/wizard-in-a-box.svg)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22wizard-in-a-box%22)
 
 Purpose:
 --------
