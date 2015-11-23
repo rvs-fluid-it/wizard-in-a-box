@@ -1,6 +1,7 @@
 package be.fluid_it.tools.dropwizard.box.datasource;
 
 import be.fluid_it.tools.dropwizard.box.config.JEEDataSourceConfiguration;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.dropwizard.Configuration;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.db.DatabaseConfiguration;
@@ -25,7 +26,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * {@link JEEDataSourceConfiguration} defined in your application
  * {@link Configuration}.
  */
-public class JEEDataSourceFactory extends DataSourceFactory {
+@JsonTypeName("jee")
+public class JEEDataSourceFactory extends DataSourceFactory implements ManagedDataSourceFactory {
     private JEEDataSourceConfiguration configuration;
 
     public JEEDataSourceFactory(JEEDataSourceConfiguration configuration) {

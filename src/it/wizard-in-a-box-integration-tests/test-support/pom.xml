@@ -10,7 +10,7 @@
     <version>testing</version>
 
     <properties>
-        <dropwizard.version>0.9.0</dropwizard.version>
+        <dropwizard.version>0.9.1</dropwizard.version>
     </properties>
 
     <dependencies>
