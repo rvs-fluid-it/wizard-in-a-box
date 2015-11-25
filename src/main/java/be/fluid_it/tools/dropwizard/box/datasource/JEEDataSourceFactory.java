@@ -27,23 +27,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * {@link Configuration}.
  */
 @JsonTypeName("jee")
-public class JEEDataSourceFactory extends DataSourceFactory implements ManagedDataSourceFactory {
-    private JEEDataSourceConfiguration configuration;
-
-    public JEEDataSourceFactory(JEEDataSourceConfiguration configuration) {
-        this.configuration = configuration;
-    }
-
-    @Override
-    @JsonProperty
-    public Map<String, String> getProperties() {
-        return configuration.getProperties();
-    }
-
+public class JEEDataSourceFactory extends JEEDataSourceConfiguration implements ManagedDataSourceFactory {
     @Override
     public ManagedDataSource build(MetricRegistry metricRegistry, String name) {
         try {
-            return new JEEManagedDataSource(this.configuration.getDatasourcesJndiKey(), this.configuration.getName());
+            return new JEEManagedDataSource(isResourceRef() ? getDatasourcesJndiKey(): null, getName());
         } catch (NamingException e) {
             throw new IllegalStateException("An error has occured while opening datasource " + name, e);
         }

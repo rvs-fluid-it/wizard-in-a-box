@@ -20,7 +20,10 @@ public class JEEDataSourceConfiguration {
     // (Dependending on the target application server used you should eventually override the default)
     // See https://tomcat.apache.org/tomcat-8.0-doc/jndi-resources-howto.html
     @NotNull
-    private String datasourcesJndKey = "java:comp/env";
+    private String datasourcesJndiKey = "java:comp/env";
+
+    @NotNull
+    private boolean resourceRef = true;
 
     @NotNull
     private String name;
@@ -45,11 +48,15 @@ public class JEEDataSourceConfiguration {
         return name;
     }
 
+    @JsonProperty
+    public boolean isResourceRef() {
+        return resourceRef;
+    }
     /**
      * @return JNDI key under which the datasources are registered.
      */
     @JsonProperty
     public String getDatasourcesJndiKey() {
-        return this.datasourcesJndKey;
+        return this.datasourcesJndiKey;
     }
 }

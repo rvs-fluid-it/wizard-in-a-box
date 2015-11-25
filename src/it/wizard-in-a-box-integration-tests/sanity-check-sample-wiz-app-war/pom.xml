@@ -47,6 +47,11 @@
       <version>${wizard.in.a.box.version}</version>
     </dependency>
     <dependency>
+        <groupId>io.dropwizard</groupId>
+        <artifactId>dropwizard-db</artifactId>
+        <version>${dropwizard.version}</version>
+    </dependency>
+    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>sample-assets</artifactId>
       <version>${project.version}</version>

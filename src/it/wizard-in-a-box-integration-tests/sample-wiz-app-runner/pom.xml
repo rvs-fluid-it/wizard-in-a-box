@@ -27,6 +27,7 @@
             <artifactId>sample-wiz-app</artifactId>
             <version>testing</version>
         </dependency>
+        
         <dependency>
             <groupId>be.fluid-it.tools.dropwizard.it</groupId>
             <artifactId>test-support</artifactId>

@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
+import java.util.Hashtable;
 import java.util.logging.Logger;
 
 import javax.naming.Context;
@@ -20,12 +21,30 @@ public class JEEManagedDataSource implements ManagedDataSource {
     private DataSource jeeDatasource;
 
     public JEEManagedDataSource(String datasourcesJndiKey, String dataSourceName) throws NamingException {
-        InitialContext ic = new InitialContext();
-        Context envCtx = (Context) ic.lookup(datasourcesJndiKey);
+        Context envCtx = null;
+        if (datasourcesJndiKey != null) {
+          InitialContext ic = new InitialContext();
+          envCtx = (Context) ic.lookup(datasourcesJndiKey);
+        } else {
+          Hashtable<String, String> env = new Hashtable<String, String>();
+          if (runningOnWeblogic()) {
+            env.put(Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory");
+          }
+          envCtx = new InitialContext(env);
+        }
         jeeDatasource = (DataSource) envCtx.lookup(dataSourceName);
     }
 
-    @Override
+  private boolean runningOnWeblogic() {
+    try {
+      Class<?> weblogicServerClass = Class.forName("weblogic.Server");
+      return weblogicServerClass != null;
+    } catch (ClassNotFoundException e) {
+      return false;
+    }
+  }
+
+  @Override
     public Connection getConnection() throws SQLException {
         return jeeDatasource.getConnection();
     }
