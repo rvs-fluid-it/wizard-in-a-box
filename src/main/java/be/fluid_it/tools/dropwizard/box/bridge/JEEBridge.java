@@ -12,11 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import org.eclipse.jetty.util.thread.ThreadPool;
 
 public class JEEBridge extends Server {
     private Logger logger = LoggerFactory.getLogger(JEEBridge.class);
 
     private final Environment environment;
+    private ThreadPool threadPool;
 
     private final List<Connector> connectors = new LinkedList<Connector>();
     private final Map<String, Object> attributesByName = new HashMap<String, Object>();
@@ -28,8 +30,9 @@ public class JEEBridge extends Server {
 
     private ServerState serverState = ServerState.STARTED;
 
-    public JEEBridge(Environment environment) {
-        this.environment = environment;
+    public JEEBridge(Environment environment, ThreadPool threadPool) {
+      super(threadPool);
+      this.environment = environment;
     }
 
     @Override
