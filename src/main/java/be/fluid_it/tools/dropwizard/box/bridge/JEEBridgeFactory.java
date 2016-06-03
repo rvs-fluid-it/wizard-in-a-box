@@ -97,7 +97,7 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
         final ThreadPool threadPool = createThreadPool(environment.metrics());
         Server server = buildServer(environment.lifecycle(), threadPool);
 
-        WebApplication.servletContext().setAttribute("fakeJettyServer", server);
+        WebApplication.servletContext().setAttribute(environment.getName(), server);
 
         environment.getAdminContext().setContextPath(adminContextPath);
         final Handler adminHandler = createAdminServlet(server,
@@ -124,6 +124,7 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
         } else {
             handler = jettyHandler;
         }
+
         if (handler instanceof ServletContextHandler) {
             ServletContextHandler servletContextHandler = (ServletContextHandler)handler;
             Map<String, String> servletContextInitParameters = servletContextHandler.getInitParams();
@@ -131,18 +132,27 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
                 logger.info("ServletContext init parameter [" + entry.getKey() + "->" + entry.getValue() + "] detected ...");
                 WebApplication.servletContext().setInitParameter(entry.getKey(), entry.getValue());
             }
+
             ServletMapping[] servletMappings = servletContextHandler.getServletHandler().getServletMappings();
-            for (ServletMapping servletMapping : servletMappings) {
-                String servletName = servletMapping.getServletName();
-                String[] servletPathSpecs = servletMapping.getPathSpecs();
-                logger.info("Servlet mapping [" + servletName + "->" + print(isContextPrefixed(servletName) ? prefixedPathSpecs(contextPath, servletPathSpecs): servletPathSpecs) + "] detected ..." );
+            if (servletMappings != null) {
+                for (ServletMapping servletMapping : servletMappings) {
+                    String servletName = servletMapping.getServletName();
+                    String[] servletPathSpecs = servletMapping.getPathSpecs();
+                    logger.info("Servlet mapping [" + servletName + "->" + print(isContextPrefixed(servletName) ? prefixedPathSpecs(contextPath, servletPathSpecs) : servletPathSpecs) + "] detected ...");
+                }
             }
+
             ServletHolder[] servlets = servletContextHandler.getServletHandler().getServlets();
             for (ServletHolder servletHolder : servlets) {
                 String servletName = servletHolder.getName();
                 logger.info("Servlet [" + servletName + "] detected ...");
                 try {
                     ServletRegistration.Dynamic servletRegistration = WebApplication.servletContext().addServlet(servletName, servletHolder.getServlet());
+                    if (servletRegistration == null) {
+                        // servlet probably already exists
+                        servletRegistration = (ServletRegistration.Dynamic) WebApplication.servletContext().getServletRegistration(servletName);
+                    }
+
                     for (Map.Entry<String, String> entry : servletHolder.getInitParameters().entrySet()) {
                         logger.info("Servlet init parameter [" + entry.getKey() + "->" + entry.getValue() + "] detected ...");
                         servletRegistration.setInitParameter(entry.getKey(), entry.getValue());

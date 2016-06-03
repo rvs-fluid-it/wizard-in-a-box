@@ -75,9 +75,6 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        if (theServletContext != null) {
-            throw new IllegalStateException("Multple WebListeners extending WebApplication detected. Only one is allowed!");
-        }
         theServletContext = sce.getServletContext();
         try {
             run(args);
@@ -88,7 +85,7 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        Server server = (Server)theServletContext.getAttribute("fakeJettyServer");
+        Server server = (Server)theServletContext.getAttribute(dropwizardEnvironment.getName());
         if (server != null) {
             try {
                 server.stop();
