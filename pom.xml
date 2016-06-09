@@ -39,7 +39,7 @@
   </scm>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <dropwizard.version>0.8.2</dropwizard.version>
+    <dropwizard.version>0.7.1</dropwizard.version>
   </properties>
   <distributionManagement>
     <repository>
@@ -61,6 +61,11 @@
       <groupId>io.dropwizard</groupId>
       <artifactId>dropwizard-core</artifactId>
       <version>${dropwizard.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.0</version>
     </dependency>
     <dependency>
       <groupId>io.dropwizard</groupId>
