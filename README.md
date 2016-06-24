@@ -5,6 +5,14 @@ Wizard in a box
 [![Build Status](https://api.travis-ci.org/rvs-fluid-it/wizard-in-a-box.svg)](https://travis-ci.org/rvs-fluid-it/wizard-in-a-box)
 [![Mvn Version](https://img.shields.io/maven-central/v/be.fluid-it.tools.dropwizard/wizard-in-a-box.svg)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22wizard-in-a-box%22)
 
+End of life:
+------------
+_"In one year time our team built up enough trust with the management to run the [Dropwizard](www.dropwizard.io/
+) based services in [Docker containers](https://www.docker.com/) orchestrated by [Helios](https://github.com/spotify/helios). [Wizard in a box](https://github.com/rvs-fluid-it/wizard-in-a-box) served us really well in the meantime and minimized our migration efforts but from now one we do not need it anymore ourselves.  
+Hence I will not upgrade myself [Wizard in a box](https://github.com/rvs-fluid-it/wizard-in-a-box) to Dropwizard 1.0 anymore. But feel free to fork the project and keep it alive."_
+
+_"A big thank you to all the committers of [Wizard in a box](https://github.com/rvs-fluid-it/wizard-in-a-box)"_ 
+
 Purpose:
 --------
 It makes a lot of sense to deliver Dropwizard applications as self-contained, executable jars. 
