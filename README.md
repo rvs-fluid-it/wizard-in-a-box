@@ -8,7 +8,7 @@ Wizard in a box
 End of life:
 ------------
 _"In one year time our team built up enough trust at the management level to run the [Dropwizard](www.dropwizard.io/
-) based services in [Docker containers](https://www.docker.com/) orchestrated by [Helios](https://github.com/spotify/helios). [Wizard in a box](https://github.com/rvs-fluid-it/wizard-in-a-box) served us really well in the meantime and minimized significantly our migration effort but from now one we do not need it anymore ourselves.  
+) based services in [Docker containers](https://www.docker.com/) orchestrated by [Helios](https://github.com/spotify/helios). [Wizard in a box](https://github.com/rvs-fluid-it/wizard-in-a-box) served us really well in the meantime and minimized significantly our migration effort to the new platform. But from now one we do not need it anymore ourselves.  
 Hence I will not upgrade myself [Wizard in a box](https://github.com/rvs-fluid-it/wizard-in-a-box) to Dropwizard 1.0. But feel free to fork the project and keep it alive."_
 
 _"A big thank you to all the committers of [Wizard in a box](https://github.com/rvs-fluid-it/wizard-in-a-box)"_ 
