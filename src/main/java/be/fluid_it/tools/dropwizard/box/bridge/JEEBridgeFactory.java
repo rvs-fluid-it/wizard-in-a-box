@@ -144,6 +144,9 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
             logger.info("Servlet init parameter [" + entry.getKey() + "->" + entry.getValue() + "] detected ...");
             servletRegistration.setInitParameter(entry.getKey(), entry.getValue());
           }
+          if (servletHolder.isAsyncSupported()) {
+            servletRegistration.setAsyncSupported(true);
+          }
           for (ServletMapping servletMapping : servletMappings) {
             if (servletName.equals(servletMapping.getServletName())) {
               String[] servletPathSpecs = servletMapping.getPathSpecs();
@@ -168,6 +171,9 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
           filterRegistration = WebApplication.servletContext().addFilter(filterName, filterHolder.getFilter());
         } else {
           filterRegistration = WebApplication.servletContext().addFilter(filterName, filterHolder.getHeldClass());
+        }
+        if (filterHolder.isAsyncSupported()) {
+          filterRegistration.setAsyncSupported(true);
         }
 
         for (Map.Entry<String, String> entry : filterHolder.getInitParameters().entrySet()) {
