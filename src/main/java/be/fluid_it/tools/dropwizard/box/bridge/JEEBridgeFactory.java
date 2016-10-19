@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.dropwizard.server.AbstractServerFactory;
 import io.dropwizard.server.ServerFactory;
+import io.dropwizard.server.SimpleServerFactory;
 import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -29,37 +30,11 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
 @JsonTypeName("bridge")
-public class JEEBridgeFactory extends AbstractServerFactory implements ServerFactory {
+public class JEEBridgeFactory extends SimpleServerFactory implements ServerFactory {
   private Logger logger = LoggerFactory.getLogger(JEEBridgeFactory.class);
-
-  @NotEmpty
-  private String applicationContextPath = "/application";
-
-  @NotEmpty
-  private String adminContextPath = "/admin";
 
   @NotNull
   private String[] servletsMappedFromRootContext = new String[]{};
-
-  @JsonProperty
-  public String getApplicationContextPath() {
-    return applicationContextPath;
-  }
-
-  @JsonProperty
-  public void setApplicationContextPath(String contextPath) {
-    this.applicationContextPath = contextPath;
-  }
-
-  @JsonProperty
-  public String getAdminContextPath() {
-    return adminContextPath;
-  }
-
-  @JsonProperty
-  public void setAdminContextPath(String contextPath) {
-    this.adminContextPath = contextPath;
-  }
 
   @JsonProperty
   public String[] getServletsMappedFromRootContext() {
@@ -83,13 +58,13 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
   public Server build(Environment environment) {
     JEEBridge server = new JEEBridge(environment, createThreadPool(environment.metrics()));
 
-    environment.getAdminContext().setContextPath(adminContextPath);
+    environment.getAdminContext().setContextPath(getAdminContextPath());
     final Handler adminHandler = createAdminServlet(server,
         environment.getAdminContext(),
         environment.metrics(),
         environment.healthChecks());
-    registerOnJEEServletContext(adminContextPath, adminHandler);
-    environment.getApplicationContext().setContextPath(applicationContextPath);
+    registerOnJEEServletContext(getAdminContextPath(), adminHandler);
+    environment.getApplicationContext().setContextPath(getApplicationContextPath());
     final Handler applicationHandler = createAppServlet(server,
         environment.jersey(),
         environment.getObjectMapper(),
@@ -97,7 +72,7 @@ public class JEEBridgeFactory extends AbstractServerFactory implements ServerFac
         environment.getApplicationContext(),
         environment.getJerseyServletContainer(),
         environment.metrics());
-    registerOnJEEServletContext(applicationContextPath, applicationHandler);
+    registerOnJEEServletContext(getApplicationContextPath(), applicationHandler);
     return server;
   }
 
