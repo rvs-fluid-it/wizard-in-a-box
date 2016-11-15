@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A {@link DataSourceFactory} that provides {@link DataSource} configured in
- * JEE Container.<br />
- * <br />
+ * JEE Container.
  * 
  * You should override
  * {@link DatabaseConfiguration#getDataSourceFactory(io.dropwizard.Configuration)}
