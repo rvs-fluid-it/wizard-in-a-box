@@ -2,8 +2,12 @@ package be.fluid_it.tools.dropwizard.box.bridge;
 
 import be.fluid_it.tools.dropwizard.box.WebApplication;
 import io.dropwizard.setup.Environment;
-import org.eclipse.jetty.server.*;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.component.LifeCycle;
+import org.eclipse.jetty.util.thread.ThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
-import org.eclipse.jetty.util.thread.ThreadPool;
 
 public class JEEBridge extends Server {
     private Logger logger = LoggerFactory.getLogger(JEEBridge.class);
@@ -92,18 +95,6 @@ public class JEEBridge extends Server {
         WebApplication.servletContext().setAttribute(name, attribute);
     }
 
-    // Handle methods are not supposed to be called
-
-    @Override
-    public void handle(HttpChannel<?> connection) throws IOException, ServletException {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void handleAsync(HttpChannel<?> connection) throws IOException, ServletException {
-        throw new UnsupportedOperationException();
-    }
-
     @Override
     public Handler getHandler() {
         // TODO
@@ -112,6 +103,9 @@ public class JEEBridge extends Server {
 
     @Override
     public Handler[] getHandlers() {
+        if (handlers == null) {
+            return new Handler[0];
+        }
         synchronized (handlers) {
             return handlers.toArray(new Handler[handlers.size()]);
         }

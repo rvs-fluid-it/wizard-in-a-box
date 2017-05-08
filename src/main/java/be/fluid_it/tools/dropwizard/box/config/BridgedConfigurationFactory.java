@@ -3,14 +3,14 @@ package be.fluid_it.tools.dropwizard.box.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.Configuration;
 import io.dropwizard.configuration.ConfigurationException;
-import io.dropwizard.configuration.ConfigurationFactory;
 import io.dropwizard.configuration.ConfigurationSourceProvider;
+import io.dropwizard.configuration.JsonConfigurationFactory;
 
 import javax.validation.Validator;
 import java.io.File;
 import java.io.IOException;
 
-public class BridgedConfigurationFactory<T extends Configuration> extends ConfigurationFactory<T> {
+public class BridgedConfigurationFactory<T extends Configuration> extends JsonConfigurationFactory<T> {
     private ConfigurationBridge<T> configurationBridge;
 
     public BridgedConfigurationFactory(ConfigurationBridge bridge, Class<T> klass, Validator validator, ObjectMapper objectMapper, String propertyPrefix) {
