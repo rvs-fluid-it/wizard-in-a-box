@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JndiConfigurationBridge<C extends Configuration> implements ConfigurationBridge<C> {
-    private Logger log = LoggerFactory.getLogger(JndiConfigurationBridge.class);
+    private final Logger logger = LoggerFactory.getLogger(JndiConfigurationBridge.class);
 
-    private final ConfigurationWriterFactory writerFactory;
+    private final ConfigurationWriterFactory<C> writerFactory;
     private final String configurationContext;
 
     private static final String DEFAULT_CONTEXT = "java:comp/env/dropwizard/configuration";
@@ -21,14 +21,14 @@ public class JndiConfigurationBridge<C extends Configuration> implements Configu
     }
 
     public JndiConfigurationBridge(String configurationContext) {
-        this(new ReflectionConfigurationWriterFactory(), configurationContext);
+        this(new ReflectionConfigurationWriterFactory<>(), configurationContext);
     }
 
-    public JndiConfigurationBridge(ConfigurationWriterFactory writerFactory) {
+    public JndiConfigurationBridge(ConfigurationWriterFactory<C> writerFactory) {
         this(writerFactory, DEFAULT_CONTEXT);
     }
 
-    public JndiConfigurationBridge(ConfigurationWriterFactory writerFactory, String configurationContext) {
+    public JndiConfigurationBridge(ConfigurationWriterFactory<C> writerFactory, String configurationContext) {
         this.configurationContext = configurationContext;
         this.writerFactory = writerFactory;
     }
@@ -42,9 +42,8 @@ public class JndiConfigurationBridge<C extends Configuration> implements Configu
             writeEnumeration(envCtx, configurationWriter, null);
 
         } catch (NamingException e) {
-            log.error("Can't configure property from J2EE Context", e);
+            logger.error("Can't configure property from J2EE Context", e);
         }
-
     }
 
     private void writeEnumeration(Context parentContext, ConfigurationWriter configurationWriter, List<String> path) {
@@ -65,17 +64,14 @@ public class JndiConfigurationBridge<C extends Configuration> implements Configu
                         configurationWriter.write(path.toArray(new String[path.size()]), value);
                     }
                 } catch (NamingException e) {
-                    log.error("Can't read property " + name + " from JNDI Naming Context " + configurationContext, e);
+                    logger.error("Can't read property " + name + " from JNDI Naming Context " + configurationContext, e);
                 } catch (ConfigurationWriterException e) {
-                    log.error("Can't write property " + name + " to Dropwizard Configuration", e);
+                    logger.error("Can't write property " + name + " to Dropwizard Configuration", e);
                 }
                 path.remove(path.size() - 1);
-
             }
         } catch (NamingException e) {
-            log.error("Can't configure property from J2EE Context", e);
+            logger.error("Can't configure property from J2EE Context", e);
         }
-
-
     }
 }

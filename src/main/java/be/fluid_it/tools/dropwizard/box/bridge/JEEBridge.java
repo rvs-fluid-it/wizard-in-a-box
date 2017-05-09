@@ -18,20 +18,21 @@ import java.io.IOException;
 import java.util.*;
 
 public class JEEBridge extends Server {
-    private Logger logger = LoggerFactory.getLogger(JEEBridge.class);
+    private final Logger logger = LoggerFactory.getLogger(JEEBridge.class);
 
     private final Environment environment;
     private ThreadPool threadPool;
 
-    private final List<Connector> connectors = new LinkedList<Connector>();
-    private final Map<String, Object> attributesByName = new HashMap<String, Object>();
-    private final List<Handler> handlers = new LinkedList<Handler>();
+    private final List<Connector> connectors = new LinkedList<>();
+    private final Map<String, Object> attributesByName = new HashMap<>();
+    private final List<Handler> handlers = new LinkedList<>();
+    private final List<LifeCycle.Listener> lifeCycleListeners = new LinkedList<>();
 
     private enum ServerState {
-        FAILED, STARTING, STARTED, STOPPING, STOPPED;
+        FAILED, STARTING, STARTED, STOPPING, STOPPED
     }
 
-    private ServerState serverState = ServerState.STARTED;
+    private final ServerState serverState = ServerState.STARTED;
 
     public JEEBridge(Environment environment, ThreadPool threadPool) {
       super(threadPool);
@@ -57,7 +58,6 @@ public class JEEBridge extends Server {
         connectors.remove(connector);
     }
 
-
     @Override
     public void clearAttributes() {
         synchronized (attributesByName) {
@@ -75,7 +75,7 @@ public class JEEBridge extends Server {
     @Override
     public Enumeration<String> getAttributeNames() {
         synchronized (attributesByName) {
-            return new Vector(attributesByName.keySet()).elements();
+            return new Vector<>(attributesByName.keySet()).elements();
         }
     }
 
@@ -128,35 +128,33 @@ public class JEEBridge extends Server {
 
     @Override
     public boolean isRunning() {
-        return STARTED.equals(serverState);
+        return ServerState.STARTED == serverState;
     }
 
     @Override
     public boolean isStarted() {
-        return STARTED.equals(serverState);
+        return ServerState.STARTED == serverState;
     }
 
     @Override
     public boolean isStarting() {
-        return STARTING.equals(serverState);
+        return ServerState.STARTING == serverState;
     }
 
     @Override
     public boolean isStopping() {
-        return STOPPING.equals(serverState);
+        return ServerState.STOPPING == serverState;
     }
 
     @Override
     public boolean isStopped() {
-        return STOPPED.equals(serverState);
+        return ServerState.STOPPED == serverState;
     }
 
     @Override
     public boolean isFailed() {
-        return FAILED.equals(serverState);
+        return ServerState.FAILED == serverState;
     }
-
-    private final List<LifeCycle.Listener> lifeCycleListeners = new LinkedList<LifeCycle.Listener>();
 
     @Override
     public void addLifeCycleListener(LifeCycle.Listener listener) {
@@ -181,7 +179,6 @@ public class JEEBridge extends Server {
     public long getStopTimeout() {
         return 0;
     }
-
 
     // Start
 

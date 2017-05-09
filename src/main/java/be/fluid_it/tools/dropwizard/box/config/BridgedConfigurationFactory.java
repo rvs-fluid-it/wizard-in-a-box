@@ -11,9 +11,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class BridgedConfigurationFactory<T extends Configuration> extends JsonConfigurationFactory<T> {
-    private ConfigurationBridge<T> configurationBridge;
+    private final ConfigurationBridge<T> configurationBridge;
 
-    public BridgedConfigurationFactory(ConfigurationBridge bridge, Class<T> klass, Validator validator, ObjectMapper objectMapper, String propertyPrefix) {
+    public BridgedConfigurationFactory(ConfigurationBridge<T> bridge, Class<T> klass, Validator validator, ObjectMapper objectMapper, String propertyPrefix) {
         super(klass, validator, objectMapper, propertyPrefix);
         configurationBridge = bridge;
     }

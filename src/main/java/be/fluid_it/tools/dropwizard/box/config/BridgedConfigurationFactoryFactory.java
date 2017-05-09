@@ -8,14 +8,14 @@ import io.dropwizard.configuration.ConfigurationFactoryFactory;
 import javax.validation.Validator;
 
 public class BridgedConfigurationFactoryFactory<T extends Configuration> implements ConfigurationFactoryFactory<T> {
-    private final ConfigurationBridge configurationBridge;
+    private final ConfigurationBridge<T> configurationBridge;
 
-    public BridgedConfigurationFactoryFactory(ConfigurationBridge configurationBridge) {
+    public BridgedConfigurationFactoryFactory(ConfigurationBridge<T> configurationBridge) {
         this.configurationBridge = configurationBridge;
     }
 
     @Override
     public ConfigurationFactory<T> create(Class<T> klass, Validator validator, ObjectMapper objectMapper, String propertyPrefix) {
-        return new BridgedConfigurationFactory<T>(configurationBridge, klass, validator, objectMapper, propertyPrefix);
+        return new BridgedConfigurationFactory<>(configurationBridge, klass, validator, objectMapper, propertyPrefix);
     }
 }

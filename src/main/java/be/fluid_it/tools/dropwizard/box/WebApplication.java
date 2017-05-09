@@ -3,7 +3,6 @@ package be.fluid_it.tools.dropwizard.box;
 import be.fluid_it.tools.dropwizard.box.config.BridgedConfigurationFactoryFactory;
 import be.fluid_it.tools.dropwizard.box.config.ClasspathConfigurationSourceProvider;
 import be.fluid_it.tools.dropwizard.box.config.ConfigurationBridge;
-import be.fluid_it.tools.dropwizard.box.config.JndiConfigurationBridge;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.cli.CheckCommand;
@@ -18,8 +17,6 @@ import org.eclipse.jetty.util.component.LifeCycle;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * A WebApplication decorates a (DropWizard) Application (GoF)
@@ -31,7 +28,7 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
   private final Application<C> dropwizardApplication;
   private final String[] args;
   private Environment dropwizardEnvironment;
-  private ConfigurationBridge configurationBridge;
+  private ConfigurationBridge<C> configurationBridge;
 
   public static ServletContext servletContext() {
     return theServletContext;
@@ -46,7 +43,7 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
     this.args = args;
   }
 
-  public void setConfigurationBridge(ConfigurationBridge configurationBridge) {
+  public void setConfigurationBridge(ConfigurationBridge<C> configurationBridge) {
     this.configurationBridge = configurationBridge;
   }
 
@@ -57,12 +54,11 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
   @Override
   public void initialize(Bootstrap<C> bootstrap) {
     if (configurationBridge != null) {
-      bootstrap.setConfigurationFactoryFactory(new BridgedConfigurationFactoryFactory<C>(configurationBridge));
+      bootstrap.setConfigurationFactoryFactory(new BridgedConfigurationFactoryFactory<>(configurationBridge));
     }
     // Swaps the default FileConfigurationSourceProvider
     bootstrap.setConfigurationSourceProvider(new ClasspathConfigurationSourceProvider());
     dropwizardApplication.initialize(bootstrap);
-
   }
 
   @Override
@@ -80,7 +76,7 @@ public abstract class WebApplication<C extends Configuration> extends Applicatio
   @Override
   public void contextInitialized(ServletContextEvent sce) {
     if (theServletContext != null) {
-      throw new IllegalStateException("Multple WebListeners extending WebApplication detected. Only one is allowed!");
+      throw new IllegalStateException("Multiple WebListeners extending WebApplication detected. Only one is allowed!");
     }
     theServletContext = sce.getServletContext();
     try {
