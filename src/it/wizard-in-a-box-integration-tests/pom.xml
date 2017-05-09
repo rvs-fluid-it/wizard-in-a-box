@@ -59,11 +59,6 @@
                 <artifactId>logback-classic</artifactId>
                 <version>${dropwizard.logback.version}</version>
             </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-core</artifactId>
-                <version>${dropwizard.logback.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
